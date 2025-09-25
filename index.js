@@ -12,59 +12,98 @@ const prisma = new PrismaClient()
 // Start the server
 app.post("/api/shipping/create", verifySecret, async (req, res) => {
   try {
+    const secretKey = req.headers["shipping_secret_key"];
+
+    if (!secretKey) {
+      return res.status(403).json({
+        "error": "SHIPPING_SECRET_KEY is missing or invalid"
+      });
+    }
+
+    if (secretKey !== process.env.SHIPPING_SECRET_KEY) {
+      return res.status(403).json({
+        "error": "Failed to authenticate SHIPPING_SECRET_KEY"
+      });
+    }
     const { userId, productId, count } = req.body
     if (!userId || !productId || !count) {
       return res.status(404).json({ error: "All fields required" });
     }
     const creates = await prisma.shipping.create({
-      data:{ userId, productId, count}
+      data: { userId, productId, count }
     })
     return res.status(201).json(creates);
   }
-  catch(err){
+  catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })
   }
 })
 
 
-app.put("/api/shipping/cancel",verifySecret,async(req,res) => {
-  try{
-    const {shippingId} = req.body
+app.put("/api/shipping/cancel", verifySecret, async (req, res) => {
+  try {
+    const secretKey = req.headers["shipping_secret_key"];
+
+    if (!secretKey) {
+      return res.status(403).json({
+        "error": "SHIPPING_SECRET_KEY is missing or invalid"
+      });
+    }
+
+    if (secretKey !== process.env.SHIPPING_SECRET_KEY) {
+      return res.status(403).json({
+        "error": "Failed to authenticate SHIPPING_SECRET_KEY"
+      });
+    }
+    const { shippingId } = req.body
     if (!shippingId) {
-      return res.status(404).json({"error": "Missing shippingId"})
+      return res.status(404).json({ "error": "Missing shippingId" })
     }
     const ship = await prisma.shipping.update({
-      where:{id:Number(shippingId)},
-      data:{
-        status:"cancelled"
+      where: { id: Number(shippingId) },
+      data: {
+        status: "cancelled"
       }
     })
     return res.status(200).json(ship)
   }
-  catch(err){
+  catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })
   }
 })
 
-app.get("/api/shipping/get",verifySecret,async(req,res) => {
-  try{
-    const {userId} = req.query
+app.get("/api/shipping/get", verifySecret, async (req, res) => {
+  try {
+    const secretKey = req.headers["shipping_secret_key"];
+
+    if (!secretKey) {
+      return res.status(403).json({
+        "error": "SHIPPING_SECRET_KEY is missing or invalid"
+      });
+    }
+
+    if (secretKey !== process.env.SHIPPING_SECRET_KEY) {
+      return res.status(403).json({
+        "error": "Failed to authenticate SHIPPING_SECRET_KEY"
+      });
+    }
+    const { userId } = req.query
     let data
-    if(!userId){
+    if (!userId) {
       data = await prisma.shipping.findMany()
     }
-    else{
+    else {
       data = await prisma.shipping.findMany(
         {
-         where: { userId: Number(userId) } 
+          where: { userId: Number(userId) }
         }
       );
     }
     return res.status(200).json(data)
   }
-  catch(err){
+  catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })
   }
