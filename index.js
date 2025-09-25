@@ -7,8 +7,8 @@ const app = express();
 app.use(express.json());
 
 const verifySecret = require("./middleware/authMiddleware");
-const { Prisma } = require('@prisma/client');
-const prisma = new Prisma()
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient()
 // Start the server
 app.post("/api/shipping/create", verifySecret, async (req, res) => {
   try {
@@ -48,13 +48,23 @@ req.put("/api/shipping/cancel",verifySecret,async(req,res) => {
 
 app.get("/api/shipping/get",verifySecret,async(req,res) => {
   try{
-    const data = await prisma.shipping.findMany()
     const{key} = req.header
     if(!key){
       return res.status(403).json({ "error": "SHIPPING_SECRET_KEY is missing or invalid"})
     }
     if(key != "a1b2c3d4e5f67890123456789abcdef"){
       return res.status(403).json({"error": "Failed to authenticate SHIPPING_SECRET_KEY"})
+    }
+    const {userId} = req.query
+    if(!userId){
+      let data = await prisma.shipping.findMany()
+    }
+    else{
+      data = await prisma.shipping.findMany(
+        {
+         where: { userId: Number(userId) } 
+        }
+      );
     }
     return res.status(200).json(data)
   }
