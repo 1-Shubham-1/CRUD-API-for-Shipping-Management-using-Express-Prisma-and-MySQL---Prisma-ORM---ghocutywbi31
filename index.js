@@ -6,7 +6,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const {verifySecret} = require("./middleware/authMiddleware");
+const verifySecret = require("./middleware/authMiddleware");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
 // Start the server
