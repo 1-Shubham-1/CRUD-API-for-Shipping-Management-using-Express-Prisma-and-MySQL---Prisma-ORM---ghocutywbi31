@@ -6,7 +6,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const verifySecret = require("./middleware/authMiddleware");
+const {verifySecret} = require("./middleware/authMiddleware");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
 // Start the server
@@ -17,7 +17,7 @@ app.post("/api/shipping/create", verifySecret, async (req, res) => {
       return res.status(404).json({ error: "All fields required" });
     }
     const creates = await prisma.shipping.create({
-      data:{ userId, productId, count, status: "pending" }
+      data:{ userId, productId, count}
     })
     return res.status(201).json(creates);
   }
@@ -50,13 +50,6 @@ app.put("/api/shipping/cancel",verifySecret,async(req,res) => {
 
 app.get("/api/shipping/get",verifySecret,async(req,res) => {
   try{
-    const key = req.headers["shipping_secret_key"];
-    if(!key){
-      return res.status(403).json({ "error": "SHIPPING_SECRET_KEY is missing or invalid"})
-    }
-    if(key != "a1b2c3d4e5f67890123456789abcdef"){
-      return res.status(403).json({"error": "Failed to authenticate SHIPPING_SECRET_KEY"})
-    }
     const {userId} = req.query
     let data
     if(!userId){

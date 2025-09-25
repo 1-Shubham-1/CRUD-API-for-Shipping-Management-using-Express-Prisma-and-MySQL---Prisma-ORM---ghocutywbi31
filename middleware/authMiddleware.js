@@ -15,4 +15,4 @@ const verifySecret = (req, res, next) => {
   next();
 };
 
-module.exports = { verifySecret };
+module.exports =  verifySecret ;
