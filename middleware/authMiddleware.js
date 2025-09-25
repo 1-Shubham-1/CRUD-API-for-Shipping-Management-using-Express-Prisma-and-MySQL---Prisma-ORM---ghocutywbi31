@@ -1,5 +1,5 @@
 // authMiddleware.js
-require(".env").config();
+require("dotenv").config();
 
 const verifySecret = (req, res, next) => {
   const secretKey = req.headers["shipping_secret_key"];
