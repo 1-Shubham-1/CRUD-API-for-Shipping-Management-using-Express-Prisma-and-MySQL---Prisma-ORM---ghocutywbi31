@@ -22,7 +22,8 @@ app.post("/api/shipping/create", verifySecret, async (req, res) => {
     return res.status(201).json(creates);
   }
   catch(err){
-    return res.status(500).json(err);
+    console.error(err)
+    return res.status(500).json({ error: "Internal server error" })
   }
 })
 
@@ -42,7 +43,8 @@ app.put("/api/shipping/cancel",verifySecret,async(req,res) => {
     return res.status(200).json(ship)
   }
   catch(err){
-    return res.status(500).json(err)
+    console.error(err)
+    return res.status(500).json({ error: "Internal server error" })
   }
 })
 
@@ -70,7 +72,8 @@ app.get("/api/shipping/get",verifySecret,async(req,res) => {
     return res.status(200).json(data)
   }
   catch(err){
-    return res.status(500).json(err)
+    console.error(err)
+    return res.status(500).json({ error: "Internal server error" })
   }
 })
 
