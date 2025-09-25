@@ -6,11 +6,11 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const {verifySecret} = require("./middleware/authMiddleware");
+const {authenticateAPIKey} = require("./middleware/authMiddleware");
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
 // Start the server
-app.post("/api/shipping/create", verifySecret, async (req, res) => {
+app.post("/api/shipping/create", authenticateAPIKey, async (req, res) => {
   try {
     const { userId, productId, count } = req.body
     if (!userId || !productId || !count) {
@@ -28,7 +28,7 @@ app.post("/api/shipping/create", verifySecret, async (req, res) => {
 })
 
 
-app.put("/api/shipping/cancel",verifySecret,async(req,res) => {
+app.put("/api/shipping/cancel",authenticateAPIKey,async(req,res) => {
   try{
     const {shippingId} = req.body
     if (!shippingId) {
@@ -48,7 +48,7 @@ app.put("/api/shipping/cancel",verifySecret,async(req,res) => {
   }
 })
 
-app.get("/api/shipping/get",verifySecret,async(req,res) => {
+app.get("/api/shipping/get",authenticateAPIKey,async(req,res) => {
   try{
     const {userId} = req.query
     let data

@@ -1,7 +1,7 @@
 // authMiddleware.js
 require("dotenv").config();
 
-const verifySecret = (req, res, next) => {
+const authenticateAPIKey = (req, res, next) => {
   const secretKey = req.headers["shipping_secret_key"];
 
   if (!secretKey) {
@@ -15,4 +15,4 @@ const verifySecret = (req, res, next) => {
   next();
 };
 
-module.exports =  {verifySecret} ;
+module.exports =  {authenticateAPIKey} ;
