@@ -15,4 +15,4 @@ const authenticateAPIKey = (req, res, next) => {
   next();
 };
 
-module.exports =  {authenticateAPIKey} ;
+module.exports =  authenticateAPIKey ;
