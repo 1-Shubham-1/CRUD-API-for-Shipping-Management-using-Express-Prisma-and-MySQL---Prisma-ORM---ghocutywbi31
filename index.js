@@ -12,7 +12,7 @@ const prisma = new PrismaClient()
 // Start the server
 app.post("/api/shipping/create", verifySecret, async (req, res) => {
   try {
-    const { userId, productId, count } = req.body()
+    const { userId, productId, count } = req.body
     if (!userId || !productId || !count) {
       return res.status(404).json({ error: "All fields required" });
     }
@@ -27,7 +27,7 @@ app.post("/api/shipping/create", verifySecret, async (req, res) => {
 })
 
 
-req.put("/api/shipping/cancel",verifySecret,async(req,res) => {
+app.put("/api/shipping/cancel",verifySecret,async(req,res) => {
   try{
     const {shippingId} = req.body
     if (!shippingId) {
@@ -48,7 +48,7 @@ req.put("/api/shipping/cancel",verifySecret,async(req,res) => {
 
 app.get("/api/shipping/get",verifySecret,async(req,res) => {
   try{
-    const{key} = req.header
+    const key = req.headers["shipping_secret_key"];
     if(!key){
       return res.status(403).json({ "error": "SHIPPING_SECRET_KEY is missing or invalid"})
     }
@@ -56,8 +56,9 @@ app.get("/api/shipping/get",verifySecret,async(req,res) => {
       return res.status(403).json({"error": "Failed to authenticate SHIPPING_SECRET_KEY"})
     }
     const {userId} = req.query
+    let data
     if(!userId){
-      let data = await prisma.shipping.findMany()
+      data = await prisma.shipping.findMany()
     }
     else{
       data = await prisma.shipping.findMany(
