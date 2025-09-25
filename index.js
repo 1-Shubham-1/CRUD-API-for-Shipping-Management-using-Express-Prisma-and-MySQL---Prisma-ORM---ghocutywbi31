@@ -35,7 +35,7 @@ app.put("/api/shipping/cancel",verifySecret,async(req,res) => {
       return res.status(404).json({"error": "Missing shippingId"})
     }
     const ship = await prisma.shipping.update({
-      where:{id:shippingId},
+      where:{id:Number(shippingId)},
       data:{
         status:"cancelled"
       }
