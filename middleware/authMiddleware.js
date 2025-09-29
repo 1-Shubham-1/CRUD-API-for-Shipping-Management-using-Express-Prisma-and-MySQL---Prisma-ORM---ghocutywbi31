@@ -4,7 +4,7 @@ require("dotenv").config();
 const verifySecret = (req, res, next) => {
   const secretKey = req.headers["shipping_secret_key"];
 
-  if (!secretKey) {
+  if (!secretKey || secretKey.trim() == "") {
     return res.status(403).json({ 
       "error": "SHIPPING_SECRET_KEY is missing or invalid"
    });
@@ -19,4 +19,4 @@ const verifySecret = (req, res, next) => {
   next();
 };
 
-module.exports =  {verifySecret} ;
+module.exports =  {verifySecret} ;  
