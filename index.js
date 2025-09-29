@@ -12,7 +12,6 @@ const prisma = new PrismaClient()
 // Start the server
 app.post("/api/shipping/create", verifySecret, async (req, res) => {
   try {
-    const secretKey = req.headers["shipping_secret_key"];
 
     const { userId, productId, count } = req.body
     if (!userId || !productId || !count) {
@@ -32,8 +31,6 @@ app.post("/api/shipping/create", verifySecret, async (req, res) => {
 
 app.put("/api/shipping/cancel", verifySecret, async (req, res) => {
   try {
-    const secretKey = req.headers["shipping_secret_key"];
-
     const { shippingId } = req.body
     if (!shippingId) {
       return res.status(404).json({ "error": "Missing shippingId" })
@@ -54,7 +51,6 @@ app.put("/api/shipping/cancel", verifySecret, async (req, res) => {
 
 app.get("/api/shipping/get", verifySecret, async (req, res) => {
   try {
-    const secretKey = req.headers["shipping_secret_key"];
 
     const { userId } = req.query
     let data
