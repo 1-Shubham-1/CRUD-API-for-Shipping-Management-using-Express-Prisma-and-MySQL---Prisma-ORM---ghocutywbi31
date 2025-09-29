@@ -14,17 +14,6 @@ app.post("/api/shipping/create", verifySecret, async (req, res) => {
   try {
     const secretKey = req.headers["shipping_secret_key"];
 
-    if (!secretKey) {
-      return res.status(403).json({
-        "error": "SHIPPING_SECRET_KEY is missing or invalid"
-      });
-    }
-
-    if (secretKey !== process.env.SHIPPING_SECRET_KEY) {
-      return res.status(403).json({
-        "error": "Failed to authenticate SHIPPING_SECRET_KEY"
-      });
-    }
     const { userId, productId, count } = req.body
     if (!userId || !productId || !count) {
       return res.status(404).json({ error: "All fields required" });
@@ -45,17 +34,6 @@ app.put("/api/shipping/cancel", verifySecret, async (req, res) => {
   try {
     const secretKey = req.headers["shipping_secret_key"];
 
-    if (!secretKey) {
-      return res.status(403).json({
-        "error": "SHIPPING_SECRET_KEY is missing or invalid"
-      });
-    }
-
-    if (secretKey !== process.env.SHIPPING_SECRET_KEY) {
-      return res.status(403).json({
-        "error": "Failed to authenticate SHIPPING_SECRET_KEY"
-      });
-    }
     const { shippingId } = req.body
     if (!shippingId) {
       return res.status(404).json({ "error": "Missing shippingId" })
@@ -78,17 +56,6 @@ app.get("/api/shipping/get", verifySecret, async (req, res) => {
   try {
     const secretKey = req.headers["shipping_secret_key"];
 
-    if (!secretKey) {
-      return res.status(403).json({
-        "error": "SHIPPING_SECRET_KEY is missing or invalid"
-      });
-    }
-
-    if (secretKey !== process.env.SHIPPING_SECRET_KEY) {
-      return res.status(403).json({
-        "error": "Failed to authenticate SHIPPING_SECRET_KEY"
-      });
-    }
     const { userId } = req.query
     let data
     if (!userId) {
