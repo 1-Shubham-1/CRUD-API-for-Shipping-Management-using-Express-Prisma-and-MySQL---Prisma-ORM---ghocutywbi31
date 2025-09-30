@@ -7,7 +7,7 @@ const verifySecret = (req, res, next) => {
 
   if (!secretKey || secretKey.trim() == "") {
     return res.status(403).json({ 
-      "error": "SHIPPING_SECRET_KEY is missing or invalid"
+      "error": "apiauthkey is missing or invalid"
    });
   }
 
