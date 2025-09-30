@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const verifySecret = (req, res, next) => {
   const headers = (req && req.headers) ? req.headers : {};
-  const secretKey = req.headers["shipping_secret_key"] || req.headers["shipping-secret-key"];
+  const secretKey = headers["shipping_secret_key"];
 
   if (!secretKey || secretKey.trim() == "") {
     return res.status(403).json({ 
