@@ -20,6 +20,7 @@ const verifySecret = (req, res, next) => {
   if(secretKey === process.env.SHIPPING_SECRET_KEY){
     next();
   }
+  return res.status(403)
 
 };
 
