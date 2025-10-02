@@ -17,7 +17,10 @@ const verifySecret = (req, res, next) => {
    });
   }
 
-  next();
+  if(secretKey === process.env.SHIPPING_SECRET_KEY){
+    next();
+  }
+
 };
 
-module.exports =  {verifySecret} ;  
+module.exports =  {verifySecret} ;
